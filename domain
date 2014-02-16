@@ -1,0 +1,469 @@
+package com.nttdata.petstore.domain;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.nttdata.petstore.dao.ProductDAO;
+
+public class Cart {
+
+	private int orderId;
+	private String custId;
+	private List itemDetails = new ArrayList();
+
+	public List getItemDetails() {
+		return itemDetails;
+	}
+
+	public void setItemDetails(List itemDetails) {
+		this.itemDetails = itemDetails;
+	}
+
+	public CartItem getCart() {
+		return getCart();
+	}
+
+	//
+	public CartItem addCartItem(Item item, int quantity) {
+		CartItem cartItem = new CartItem(item, quantity);
+		itemDetails.add(cartItem);
+		return cartItem;
+	}
+
+	ProductDAO dao = new ProductDAO();
+
+	public int getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getCustId() {
+		return custId;
+	}
+
+	public void setCustId(String custId) {
+		this.custId = custId;
+	}
+
+	public List name(String custId, CartItem cartItem) {
+
+		List list = new ArrayList();
+		list.add(custId);
+		list.add(cartItem);
+		return list;
+	}
+
+}
+package com.nttdata.petstore.domain;
+
+public class Customer {
+
+	private String custId;
+	private String pasword;
+	private String firstName;
+	private String lastName;
+	private String dateOfBirth;
+	private String address;
+	private int contactNumber;
+	private int creditCardno;
+
+	public int getCreditCardno() {
+		return creditCardno;
+	}
+
+	public void setCreditCardno(int cardNumber) {
+		this.creditCardno = cardNumber;
+	}
+
+	private String cardType;
+	private String cardExpiryDate;
+
+	public Customer() {
+
+	}
+
+	public String getCustId() {
+		return custId;
+	}
+
+	public void setCustId(String custId) {
+		this.custId = custId;
+	}
+
+	public String getPasword() {
+		return pasword;
+	}
+
+	public void setPasword(String pasword) {
+		this.pasword = pasword;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public int getContactNumber() {
+		return contactNumber;
+	}
+
+	public void setContactNumber(int contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+
+	public String getCardType() {
+		return cardType;
+	}
+
+	public void setCardType(String cardType) {
+		this.cardType = cardType;
+	}
+
+	public String getCardExpiryDate() {
+		return cardExpiryDate;
+	}
+
+	public void setCardExpiryDate(String cardExpiryDate) {
+		this.cardExpiryDate = cardExpiryDate;
+	}
+
+	public Customer(String custId, String pasword) {
+		super();
+		this.custId = custId;
+		this.pasword = pasword;
+	}
+
+	public Customer(String firstName, String lastName, String dateOfBirth,
+			String address, int contactNumber) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.address = address;
+		this.contactNumber = contactNumber;
+	}
+
+	public Customer(int creditCardno, String cardType, String cardExpiryDate) {
+		super();
+		this.creditCardno = creditCardno;
+		this.cardType = cardType;
+		this.cardExpiryDate = cardExpiryDate;
+	}
+
+}
+package com.nttdata.petstore.domain;
+
+public class Category {
+
+	private int categoryId;
+	private String categoryName;
+	private String categoryDescription;
+
+	@Override
+	public String toString() {
+		return "Category [categoryId=" + categoryId + ", categoryName="
+				+ categoryName + ", categoryDescription=" + categoryDescription
+				+ "]";
+	}
+
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public String getCategoryDescription() {
+		return categoryDescription;
+	}
+
+	public void setCategoryDescription(String categoryDescription) {
+		this.categoryDescription = categoryDescription;
+	}
+
+	public Category(int categoryId, String categoryName,
+			String categoryDescription) {
+		super();
+		this.categoryId = categoryId;
+		this.categoryName = categoryName;
+		this.categoryDescription = categoryDescription;
+	}
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		Category cat = (Category) obj;
+		if(this.categoryId == cat.getCategoryId() && this.categoryName.equals(cat.getCategoryName()) && this.categoryDescription.equals(cat.getCategoryDescription())){
+			return true;
+		}
+		return false;
+	}
+
+	public Category() {
+		// TODO Auto-generated constructor stub
+	}
+}
+package com.nttdata.petstore.domain;
+
+public class Item {
+
+	private int itemId;
+	private int productId;
+	private int categoryId;
+	private String itemName;
+	private String itemDescription;
+	private int itemPrice;
+	CartItem obj1 = new CartItem();
+	Cart cart = new Cart();
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
+	public CartItem getObj1() {
+		return obj1;
+	}
+
+	public void setObj1(CartItem obj1) {
+		this.obj1 = obj1;
+	}
+
+	@Override
+	public String toString() {
+		return "Item [itemId=" + itemId + ", productId=" + productId
+				+ ", categoryId=" + categoryId + ", itemName=" + itemName
+				+ ", itemDescription=" + itemDescription + ", itemPrice="
+				+ itemPrice + "]";
+	}
+
+	public int getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
+	}
+
+	public int getProductId() {
+		return productId;
+	}
+
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public String getItemDescription() {
+		return itemDescription;
+	}
+
+	public void setItemDescription(String itemDescription) {
+		this.itemDescription = itemDescription;
+	}
+
+	public int getItemPrice() {
+		return itemPrice;
+	}
+
+	public void setItemPrice(int itemPrice) {
+		this.itemPrice = itemPrice;
+	}
+
+	public Item(int itemId, int productId, int categoryId, String itemName,
+			String itemDescription, int itemPrice) {
+		super();
+		this.itemId = itemId;
+		this.productId = productId;
+		this.categoryId = categoryId;
+		this.itemName = itemName;
+		this.itemDescription = itemDescription;
+		this.itemPrice = itemPrice;
+	}
+
+	public Item() {
+		super();
+	}
+
+	public Item(int int1, int int2, int int3) {
+
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		Item item = (Item) obj;
+		if(this.itemId == item.getItemId() && this.productId == item.getProductId() && this.itemName.equals(item.getItemName()) && this.itemDescription.equals(item.getItemDescription()) && this.itemPrice == item.getItemPrice()){
+			return true;
+		}
+		return false;
+	}
+
+}
+package com.nttdata.petstore.domain;
+
+public class CartItem {
+
+	private Item Item;
+	private int quantity;
+
+	public CartItem(Item item, int quantity) {
+		super();
+		Item = item;
+		this.quantity = quantity;
+	}
+
+	public CartItem() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		return "CartItem [Item=" + Item + ", quantity=" + quantity + "]";
+	}
+
+	public Item getItem() {
+		return Item;
+	}
+
+	public void setItem(Item item) {
+		Item = item;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+}
+package com.nttdata.petstore.domain;
+
+public class Product {
+	private int productId;
+	private int categoryId;
+	private String productName;
+	private String productDesc;
+
+	@Override
+	public String toString() {
+		return "Product [productId=" + productId + ", categoryId=" + categoryId
+				+ ", productName=" + productName + ", productDesc="
+				+ productDesc + "]";
+	}
+
+	public String getProductDesc() {
+		return productDesc;
+	}
+
+	public void setProductDesc(String productDesc) {
+		this.productDesc = productDesc;
+	}
+
+	public int getProductId() {
+		return productId;
+	}
+
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public Product(int productId, int categoryId, String productName,
+			String productDesc) {
+		super();
+		this.productId = productId;
+		this.categoryId = categoryId;
+		this.productName = productName;
+		this.productDesc = productDesc;
+	}
+
+	public Product() {
+		super();
+	}
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		Product prod = (Product) obj;
+		if(this.categoryId == prod.getCategoryId() && this.productId == prod.getProductId() && this.productName.equals(prod.getProductName()) && this.productId == prod.getProductId()){
+			return true;
+		}
+		return false;
+	}
+	
+	
+
+
+}
+------------------

@@ -1,0 +1,68 @@
+package com.nttdata.petstore.dbcon;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp.BasicDataSource;
+
+
+
+
+public final class ConnectionHolder {
+
+	
+		private static ConnectionHolder instance=null;
+		private static DataSource dataSource=null;
+	private ConnectionHolder(){
+		
+	}
+	public static ConnectionHolder getInstance() throws DBConnectionException{
+		if(instance==null){
+			instance=new ConnectionHolder();
+			try {
+				instance.initAppDataSource();
+			} catch (DBConnectionException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+				throw new DBConnectionException(e.getMessage());
+			}
+		}
+		return instance;
+	}
+	private void initAppDataSource() throws DBConnectionException{
+		BasicDataSource basic=new BasicDataSource();
+		Properties prop=new Properties();
+		try {
+			prop.load(new FileInputStream("src\\jdbc.properties"));
+			basic.setUrl(prop.getProperty("URL"));
+			basic.setDriverClassName(prop.getProperty("driver"));
+			basic.setUsername(prop.getProperty("uid"));
+			basic.setPassword(prop.getProperty("pwd"));
+			dataSource=basic;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			throw new DBConnectionException(e.getMessage());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			///e.printStackTrace();
+			throw new DBConnectionException(e.getMessage());
+		}
+	}
+	public Connection getConnection() throws DBConnectionException{
+		 try {
+			return dataSource.getConnection();
+		} catch (SQLException e) {
+			throw new DBConnectionException(e.getMessage());
+		}
+		
+	}
+}
+

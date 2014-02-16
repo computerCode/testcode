@@ -1,0 +1,186 @@
+package com.nttdata.petstore.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import com.nttdata.petstore.dao.OrderDAO;
+import com.nttdata.petstore.dao.PetStoreDAOException;
+import com.nttdata.petstore.dao.ProductDAO;
+import com.nttdata.petstore.dao.UserDAO;
+import com.nttdata.petstore.dbcon.DBConnectionException;
+import com.nttdata.petstore.dbfw.DBFWException;
+import com.nttdata.petstore.domain.Cart;
+import com.nttdata.petstore.domain.Customer;
+import com.nttdata.petstore.domain.Item;
+
+public class PetStrorefacade {
+	
+	OrderDAO daoOne = new OrderDAO();
+	ProductDAO daoTwo = new ProductDAO();
+	UserDAO daoThree = new UserDAO();
+
+	public boolean validateUser(final String userId, final String password)
+			throws PetStoreException, PetStoreDAOException {
+		boolean isValidated = false;
+		try {
+			isValidated = daoThree.validateUser(userId, password);
+		} catch (PetStoreDAOException e) {
+			throw new PetStoreDAOException("No Connection");
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		}
+		return isValidated;
+	}
+
+	public Object registerUser(final Customer customer)
+			throws PetStoreException, PetStoreDAOException {
+
+		Object obj = new Object();
+		try {
+			obj = (Customer) daoThree.registerUser(customer);
+		} catch (PetStoreDAOException e) {
+			throw new PetStoreDAOException("No connection");
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		} catch (DBConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return (Customer) obj;
+	}
+
+	//
+	public List getCategories() throws PetStoreException, PetStoreDAOException {
+
+		List categories = new ArrayList();
+		try {
+			categories = daoTwo.getCategories();
+		} catch (DBConnectionException e) {
+			throw new PetStoreDAOException("No connection");
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		}
+		return categories;
+	}
+
+	//
+	public List getCatByid(final int categId) throws PetStoreException,
+			DBFWException {
+		List specificCateg = new ArrayList();
+		try {
+			specificCateg = daoTwo.getCatbyID(categId);
+		} catch (DBFWException e) {
+			throw new DBFWException("No connection");
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		} catch (PetStoreDAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return specificCateg;
+	}
+
+	public List getProductList(final int categId) throws PetStoreException,
+			DBFWException {
+		List products = new ArrayList();
+		products = daoTwo.getProductList(categId);
+		return products;
+	}
+
+	public List getProduct(final int categId, final int prodId)
+			throws PetStoreException, DBFWException {
+		List specificProducts = new ArrayList();
+		specificProducts = daoTwo.getProduct(categId, prodId);
+		return specificProducts;
+	}
+
+	public List getItemList(final int categId, final int prodId)
+			throws PetStoreException, DBFWException {
+		List<Item> itemList = new ArrayList();
+		itemList = daoTwo.getItemList(categId, prodId);
+		return itemList;
+	}
+
+	public List getItem(final int categId, final int prodId, final int itemId)
+			throws PetStoreException, DBFWException, DBConnectionException {
+		List<Item> specificItemList = new ArrayList();
+		try {
+			specificItemList = daoTwo.getItem(categId, prodId, itemId);
+		} catch (DBFWException e) {
+			throw new DBFWException("No connection");
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		}
+		return specificItemList;
+	}
+
+	//
+	public int placeOrder(final Cart shoppingCart) throws PetStoreException {
+
+		int isPlaced = 0;
+		isPlaced = (Integer) daoOne.placeOrder(shoppingCart);
+		return isPlaced;
+	}
+
+	//
+	public Object getPurchaseDetails(final int orderId) throws DBFWException {
+
+		Object purchased = null;
+		try {
+			purchased = daoOne.getPurchaseDetails(orderId);
+		} catch (DBFWException e) {
+			throw new DBFWException("No connection");
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		}
+		return purchased;
+	}
+
+	public int getOrderId() throws DBFWException {
+		int orderid = 0;
+		try {
+			System.out.println("inside facade");
+			orderid = daoOne.generateOrderID();
+		} catch (DBFWException e) {
+			throw new DBFWException("No connection");
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		} catch (PetStoreDAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return orderid;
+	}
+
+	public int insertNewOrder(final Cart shoppingCart) throws DBFWException {
+		// TODO Auto-generated method stub
+
+		int isInserted = 0;
+		try {
+			isInserted = daoOne.insertNewOrder(shoppingCart);
+		} catch (DBFWException e) {
+			throw new DBFWException("No connection");
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		}
+		return isInserted;
+	}
+}
+package com.nttdata.petstore.service;
+
+public class PetStoreException extends Exception {
+
+	public PetStoreException(Throwable cause) {
+		super(cause);
+		// TODO Auto-generated constructor stub
+	}
+
+	public PetStoreException(String message, Throwable cause) {
+		super(message, cause);
+		// TODO Auto-generated constructor stub
+	}
+
+}
+
